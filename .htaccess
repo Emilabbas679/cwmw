@@ -1,0 +1,57 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+#    php_value upload_max_filesize 100M
+#    php_value post_max_size 100M
+#    php_value session.gc-maxlifetime 86400
+#    php_value memory_limit -1
+    Options +FollowSymlinks
+
+RewriteCond %{HTTPS} off [OR]
+RewriteCond %{HTTP_HOST} !^www\.
+
+RewriteRule ^([^\.]+)$ $1.html [NC,L]
+
+<IfModule mod_expires.c>
+  ExpiresActive on
+
+  ExpiresByType image/gif                 "access plus 1 day"
+  ExpiresByType image/png                 "access plus 1 day"
+  ExpiresByType image/jpeg                "access plus 1 day"
+  ExpiresByType video/ogg                 "access plus 1 day"
+  ExpiresByType audio/ogg                 "access plus 1 day"
+  ExpiresByType video/mp4                 "access plus 1 day"
+  ExpiresByType video/webm                "access plus 1 day"
+
+  ExpiresByType application/x-font-ttf    "access plus 1 month"
+  ExpiresByType font/opentype             "access plus 1 month"
+  ExpiresByType application/x-font-woff   "access plus 1 month"
+  ExpiresByType image/svg+xml             "access plus 1 month"
+  ExpiresByType application/vnd.ms-fontobject "access plus 1 month"
+
+  ExpiresByType text/css                  "access plus 1 day"
+  ExpiresByType application/javascript    "access plus 1 day"
+
+</IfModule>
+
+
+  RewriteCond %{REQUEST_URI} ^/(api)
+    RewriteRule ^api/(.*)$ api/web/index.php [L]
+
+
+    RewriteCond %{REQUEST_URI} ^/(site|storage|css|backend|js|images)
+
+    RewriteRule ^site/(.*)$ public/site/$1 [L]
+    RewriteRule ^storage/(.*)$ public/storage/$1 [L]
+    RewriteRule ^css/(.*)$ public/css/$1 [L]
+    RewriteRule ^js/(.*)$ public/js/$1 [L]
+    RewriteRule ^images/(.*)$ public/images/$1 [L]
+    RewriteRule ^backend/(.*)$ public/backend/$1 [L]
+
+
+
+    RewriteCond %{REQUEST_URI} !^/(storage|site|css|backend|js|images)/
+    RewriteCond %{REQUEST_URI} !index.php
+    RewriteCond %{REQUEST_FILENAME} !-f [OR]
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ public/index.php
+</IfModule>
