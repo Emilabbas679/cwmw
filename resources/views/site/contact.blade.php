@@ -92,7 +92,7 @@
                                 @foreach($recent as $val)
                                    <?php $date  =  new Date(strtotime($val->created_at)); ?>
 
-                                    <li class="clearfix"> <a href="/blog-post/{{$val->id}}" class="media-box post-image"> <img src="/storage/news/{{$val->img}}" alt="" class="img-thumbnail"> </a>
+                                    <li class="clearfix"> <a href="/blog-post/{{$val->id}}" class="media-box post-image"> <img src="/uploads/news/{{$val->img}}" alt="" class="img-thumbnail"> </a>
                                         <div class="widget-blog-content"><a href="/blog-post/{{$val->id}}">{{$val->title}}</a> <span class="meta-data"><i class="fa fa-calendar"></i>{{$date->format('d M, y')}}</span> </div>
                                     </li>
                                 @endforeach

@@ -20,7 +20,8 @@
                         <td>
 
                             @foreach($imgs as $img)
-                                <img src="/storage/gallery/{{$img}}" alt="{{$image->title}}" title="{{$image->title}}" width="200" height="100">
+{{--                                <img src="/storage/gallery/{{$img}}" alt="{{$image->title}}" title="{{$image->title}}" width="200" height="100">--}}
+                                <img src="/uploads/gallery/{{$img}}" alt="{{$image->title}}" title="{{$image->title}}" width="200" height="100">
                              @endforeach
                         </td>
                     </tr>

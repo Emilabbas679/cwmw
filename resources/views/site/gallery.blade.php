@@ -40,8 +40,10 @@
                                         <div class="flexslider" data-autoplay="yes" data-pagination="yes" data-arrows="yes" data-style="slide" data-pause="yes">
                                             <ul class="slides">
                                                 @foreach($imgs as $value)
-                                                    <li class="item"><a href="/storage/gallery/{{$value}}" data-rel="prettyPhoto[postname]">
-                                                            <img src="/storage/gallery/{{$value}}" alt=""></a></li>
+{{--                                                    <li class="item"><a href="/storage/gallery/{{$value}}" data-rel="prettyPhoto[postname]">--}}
+{{--                                                            <img src="/storage/gallery/{{$value}}" alt=""></a></li>         --}}
+                                                    <li class="item"><a href="/uploads/gallery/{{$value}}" data-rel="prettyPhoto[postname]">
+                                                            <img src="/uploads/gallery/{{$value}}" alt=""></a></li>
                                                 @endforeach
                                             </ul>
                                         </div>

@@ -83,7 +83,8 @@
                                                        class="control-label col-md-2 col-sm-2 col-xs-12">{{trans('admin.img')}}
                                                 </label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <img src="/storage/news/{{$news->img}}" alt="" width="200" height="100">
+{{--                                                    <img src="/storage/news/{{$news->img}}" alt="" width="200" height="100">--}}
+                                                    <img src="/uploads/news/{{$news->img}}" alt="" width="200" height="100">
                                                 </div>
                                             </div>
 

@@ -57,7 +57,7 @@
                                         ?>
                                         <li class="item post">
                                             <div class="row">
-                                                <div class="col-md-4"> <a href="/blog-post/{{$val->id}}" class="media-box"> <img src="/storage/news/{{$val->img}}" alt="" class="img-thumbnail"> </a></div>
+                                                <div class="col-md-4"> <a href="/blog-post/{{$val->id}}" class="media-box"> <img src="/uploads/news/{{$val->img}}" alt="" class="img-thumbnail"> </a></div>
                                                 <div class="col-md-8">
                                                     <div class="post-title">
                                                         <h2><a href="/blog-post/{{$val->id}}">{{$val->title}}</a></h2>
@@ -93,7 +93,7 @@
                                     <li class="item sermon featured-sermon"> <span class="date">{{$date->format('M d, Y')}}</span>
                                         <h4><a href="/blog-post/{{$recent_news[0]->id}}">{{$recent_news[0]['title']}}</a></h4>
                                         <div class="featured-sermon-video">
-                                            <img src="/storage/news/{{$recent_news[0]['img']}}" alt="">
+                                            <img src="/uploads/news/{{$recent_news[0]['img']}}" alt="">
                                         </div>
                                         <?php
                                         $textpart = explode('</p>',$recent_news[0]['text'])[0];
@@ -117,14 +117,18 @@
             <div class="row">
                 <div class="col-md-3 col-sm-3">
                     <a href="/gallery" class="btn btn-default btn-lg" style="margin-top:40px;">{{trans("site.more_gallery")}}</a> </div>
+                
                 @foreach($images as $image)
                     <div class="col-md-3 col-sm-3 post format-image">
                     <?php $imgs = explode(' ',$image->img)?>
                         <div class="flexslider" data-autoplay="yes" data-pagination="yes" data-arrows="yes" data-style="slide" data-pause="yes">
                             <ul class="slides">
                                 @foreach($imgs as $value)
-                                    <li class="item"><a href="/storage/gallery/{{$value}}" data-rel="prettyPhoto[Gallery]">
-                                            <img src="/storage/gallery/{{$value}}" alt=""></a></li>
+{{--                                    <li class="item"><a href="/uploads/gallery/{{$value}}" data-rel="prettyPhoto[Gallery]">--}}
+{{--                                            <img src="/uploads/gallery/{{$value}}" alt=""></a></li>--}}
+
+                                    <li class="item"><a href="/uploads/gallery/{{$value}}" data-rel="prettyPhoto[Gallery]">
+                                            <img src="/uploads/gallery/{{$value}}" alt=""></a></li>
                                 @endforeach
                             </ul>
                         </div>

@@ -40,7 +40,7 @@
                                 $date  =  new Date(strtotime($val->created_at));
                                 ?>
                             <li class="grid-item post format-standard" style="display: block;">
-                                <div class="grid-item-inner"> <a href="/storage/news/{{$val->img}}" data-rel="prettyPhoto" class="media-box"> <img src="/storage/news/{{$val->img}}" alt=""> </a>
+                                <div class="grid-item-inner"> <a href="/uploads/news/{{$val->img}}" data-rel="prettyPhoto" class="media-box"> <img src="/uploads/news/{{$val->img}}" alt=""> </a>
                                     <div class="grid-content">
                                         <h3><a href="/blog-post/{{$val->id}}">{{$val->title}}</a></h3>
                                         <span class="meta-data"><span><i class="fa fa-calendar"></i>{{$date->format('d M, Y')}}</span></span>

@@ -28,7 +28,8 @@
                     </tr>
                     <tr>
                         <th>{{trans('admin.img')}}</th>
-                        <td> <img src="/storage/news/{{$news->img}}" alt="" width="140" height="80"> </td>
+{{--                        <td> <img src="/storage/news/{{$news->img}}" alt="" width="140" height="80"> </td>--}}
+                        <td> <img src="/uploads/news/{{$news->img}}" alt="" width="140" height="80"> </td>
                     </tr>
                     <tr>
                         <th>{{trans('admin.created_by')}}</th>

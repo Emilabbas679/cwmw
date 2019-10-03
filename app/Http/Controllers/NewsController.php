@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 //use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Image\Image;
 use Spatie\Sluggable\SlugOptions;
 
 
@@ -68,7 +69,9 @@ class NewsController extends Controller
             $fileName = pathinfo($fileNameWithExt,PATHINFO_FILENAME);
             $ext = $request->file('img')->getClientOriginalExtension();
             $fileNameToStore = $fileName."_".time().".".$ext;
-            $request->file('img')->storeAs('public/news',$fileNameToStore);
+//            $request->file('img')->storeAs('public/news',$fileNameToStore);
+            Image::load($request->file('img'))->save('uploads/news/'.$fileNameToStore);
+
         }
         else{
             $fileNameToStore= '';
@@ -147,6 +150,7 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
     public function update(Request $request, $id)
     {
         $locale = Lang::all();
@@ -161,7 +165,9 @@ class NewsController extends Controller
             $fileName = pathinfo($fileNameWithExt,PATHINFO_FILENAME);
             $ext = $request->file('img')->getClientOriginalExtension();
             $fileNameToStore = $fileName."_".time().".".$ext;
-            $request->file('img')->storeAs('public/news',$fileNameToStore);
+//            $request->file('img')->storeAs('public/news',$fileNameToStore);
+            Image::load($request->file('img'))->save('uploads/news/'.$fileNameToStore);
+
         }
 
 
@@ -187,9 +193,12 @@ class NewsController extends Controller
         $news->text = $text;
         $news->slug = $slug;
         if($request->hasFile('img')) {
-            if($news->img !== '') {
-                Storage::delete('public/news/' . $news->img);
-            }
+//            if($news->img !== '') {
+                if(is_file('uploads/news/'.$news->img)){
+                    unlink('uploads/news/'.$news->img);
+                }
+//                Storage::delete('public/news/' . $news->img);
+//            }
             $news->img = $fileNameToStore;
         }
         if($news->save()) {
@@ -211,8 +220,11 @@ class NewsController extends Controller
     public function destroy($id)
     {
         $news = News::find($id);
-        if($news->img !=='') {
-            Storage::delete('public/news/'.$news->img);
+//        if($news->img !=='') {
+//            Storage::delete('public/news/'.$news->img);
+//        }
+        if (is_file("uploads/news/".$news->img)) {
+            unlink("uploads/news/".$news->img);
         }
         $news->delete();
         return redirect('/admin/news')->with("success",trans('admin.deleted'));

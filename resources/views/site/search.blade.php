@@ -43,7 +43,7 @@
 
                                         <li class="item post">
                                             <div class="row">
-                                                <div class="col-md-4"> <a href="/blog-post" class="media-box"> <img src="/storage/news/{{$val->img}}" alt="" class="img-thumbnail"> </a></div>
+                                                <div class="col-md-4"> <a href="/blog-post" class="media-box"> <img src="/uploads/news/{{$val->img}}" alt="" class="img-thumbnail"> </a></div>
                                                 <div class="col-md-8">
                                                     <div class="post-title">
                                                         <h2><a href="/blog-post/{{$val->id}}">{{$val->title}}</a></h2>

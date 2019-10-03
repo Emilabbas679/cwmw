@@ -46,6 +46,8 @@ RewriteRule ^([^\.]+)$ $1.html [NC,L]
     RewriteRule ^js/(.*)$ public/js/$1 [L]
     RewriteRule ^images/(.*)$ public/images/$1 [L]
     RewriteRule ^backend/(.*)$ public/backend/$1 [L]
+    RewriteRule ^uploads/(.*)$ public/uploads/$1 [L]
+
 
 
 

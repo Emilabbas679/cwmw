@@ -43,7 +43,7 @@
                             <h2 class="post-title">{{$news->title}}</h2>
                         </header>
                         <article class="post-content"> <span class="post-meta meta-data"><span><i class="fa fa-calendar"></i>{{$date->format('d M, Y')}}</span> </span>
-                            <div class="featured-image"> <img src="/storage/news/{{$news->img}}" alt=""> </div>
+                            <div class="featured-image"> <img src="/uploads/news/{{$news->img}}" alt=""> </div>
                             <p>{!! $news->text !!}</p>
                         </article>
                     </div>
@@ -69,7 +69,7 @@
                                    <?php $date  =  new Date(strtotime($recent->created_at)); ?>
 
                                     <li class="grid-item post format-standard">
-                                        <div class="grid-item-inner"> <a href="/storage/news/{{$recent->img}}" data-rel="prettyPhoto" class="media-box"> <img src="/storage/news/{{$recent->img}}" alt=""> </a>
+                                        <div class="grid-item-inner"> <a href="/uploads/news/{{$recent->img}}" data-rel="prettyPhoto" class="media-box"> <img src="/uploads/news/{{$recent->img}}" alt=""> </a>
                                             <div class="grid-content">
                                                 <h3><a href="/blog-post/{{$recent->id}}">{!! $recent->title !!}</a></h3>
                                                 <span class="meta-data"><span><i class="fa fa-calendar"></i> {{$date->format("d M, Y")}}   </span></span>

@@ -7,6 +7,7 @@ use App\Lang;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Storage;
+use Spatie\Image\Image;
 
 
 class GalleryController extends Controller
@@ -42,12 +43,7 @@ class GalleryController extends Controller
         return view('admin.gallery.create')->with('locale',$locale);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
 
@@ -63,18 +59,13 @@ class GalleryController extends Controller
                 $ext = $file->getClientOriginalExtension();
                 $fileNameToStore = $fileName."_".time().".".$ext;
                 $fileNameToDb .= $fileNameToStore.' ';
-                $file->storeAs('public/gallery',$fileNameToStore);
+//                $file->storeAs('public/gallery',$fileNameToStore);
+                Image::load($file)->save('uploads/gallery/'.$fileNameToStore);
+
             }
             $fileNameToDb = rtrim($fileNameToDb,' ');
 
         }
-
-//        $fileNameWithExt = $request->file('img')->getClientOriginalName();
-//        $fileName = pathinfo($fileNameWithExt,PATHINFO_FILENAME);
-//        $ext = $request->file('img')->getClientOriginalExtension();
-//        $fileNameToStore = $fileName."_".time().".".$ext;
-//        $request->file('img')->storeAs('public/gallery',$fileNameToStore);
-
         $locale = Lang::all();
         $arr_title = [];
         $title = $request->title;
@@ -142,15 +133,6 @@ class GalleryController extends Controller
 
         ]);
 
-//        if($request->hasFile('img')) {
-//            $fileNameWithExt = $request->file('img')->getClientOriginalName();
-//            $fileName = pathinfo($fileNameWithExt,PATHINFO_FILENAME);
-//            $ext = $request->file('img')->getClientOriginalExtension();
-//            $fileNameToStore = $fileName."_".time().".".$ext;
-//            $request->file('img')->storeAs('public/gallery',$fileNameToStore);
-//        }
-
-
         if($request->hasFile('img')) {
             $fileNameToDb = '';
             foreach ($request->img as $file) {
@@ -159,7 +141,9 @@ class GalleryController extends Controller
                 $ext = $file->getClientOriginalExtension();
                 $fileNameToStore = $fileName."_".time().".".$ext;
                 $fileNameToDb .= $fileNameToStore.' ';
-                $file->storeAs('public/gallery',$fileNameToStore);
+//                $file->storeAs('public/gallery',$fileNameToStore);
+                Image::load($file)->save('uploads/gallery/'.$fileNameToStore);
+
             }
             $fileNameToDb = rtrim($fileNameToDb,' ');
 
@@ -185,7 +169,10 @@ class GalleryController extends Controller
             if($gallery->img !== '') {
                 $images = explode(' ' , $gallery->img);
                 foreach ($images as $img) {
-                    Storage::delete('public/gallery/' . $img);
+                    if(is_file("uploads/gallery/".$img)) {
+                        unlink("uploads/gallery/".$img);
+                    }
+//                    Storage::delete('public/gallery/' . $img);
                 }
             }
             $gallery->img = $fileNameToDb;
@@ -210,7 +197,10 @@ class GalleryController extends Controller
         if($gallery->img !== '') {
             $images = explode(' ' , $gallery->img);
             foreach ($images as $img) {
-                Storage::delete('public/gallery/' . $img);
+                if(is_file("uploads/gallery/".$img)) {
+                    unlink("uploads/gallery/".$img);
+                }
+//                Storage::delete('public/gallery/' . $img);
             }
         }
         $gallery->delete();
