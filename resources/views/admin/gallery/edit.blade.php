@@ -48,7 +48,7 @@
                                                     </label>
                                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                                         <input required id="title" type="text"
-                                                               name="title[]"
+                                                               name="title[{{$local->lang}}]"
                                                                class="form-control col-md-7 col-xs-12" value="{{$image->gettranslation('title',$local->lang)}}">
                                                     </div>
                                                 </div>

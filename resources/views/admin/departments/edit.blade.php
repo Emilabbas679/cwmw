@@ -36,7 +36,7 @@
                                                            class="control-label col-md-2 col-sm-2 col-xs-12">{{trans('site.departments')}}
                                                     </label>
                                                     <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <textarea required id="departments" name="departments[]"
+                                                    <textarea required id="departments" name="departments[{{$local->lang}}]"
                                                               class="form-control col-md-7 col-xs-12 ckeditor" >
                                                         {{$departments->gettranslation('departments',$local->lang)}}
                                                     </textarea>

@@ -63,44 +63,29 @@ class NewsController extends Controller
 
         ]);
 
-
         if($request->hasFile('img')) {
             $fileNameWithExt = $request->file('img')->getClientOriginalName();
             $fileName = pathinfo($fileNameWithExt,PATHINFO_FILENAME);
             $ext = $request->file('img')->getClientOriginalExtension();
             $fileNameToStore = $fileName."_".time().".".$ext;
-//            $request->file('img')->storeAs('public/news',$fileNameToStore);
             Image::load($request->file('img'))->save('uploads/news/'.$fileNameToStore);
-
         }
         else{
             $fileNameToStore= '';
         }
-        $locale = Lang::all();
 
         $arr_slug = [];
         $title = $request->title;
         foreach ($title as $key =>$value) {
             $value = mb_strtolower(str_replace(' ','-',$value));
-            array_push($arr_slug, $value);
+            $arr_slug[$key] = $value;
         }
 
-        $title = $request->title;
-
-
-        $array2 = [];
-        foreach ($locale as $lockey => $local) {
-            array_push($array2,$local->lang);
-        };
-        $keys = array_values($array2);
-        $title = array_combine($keys, array_values($request->title));
-        $slug = array_combine($keys, array_values($arr_slug));
-        $text = array_combine($keys, array_values($request->text));
         $news = new News();
-        $news->slug = $slug;
+        $news->slug = $arr_slug;
         $news->user_id = Auth::id();
-        $news->text = $text;
-        $news->title = $title;
+        $news->text = $request->text;
+        $news->title = $request->title;
         $news->img = $fileNameToStore;
 
         if($news->save()){
@@ -109,10 +94,6 @@ class NewsController extends Controller
         else{
             return redirect('/admin/news/create')->with('error',trans('didnot_save'));
         }
-
-
-
-
     }
 
     /**
@@ -121,9 +102,8 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(News $news)
     {
-        $news = News::find($id);
         return view("admin.news.show")->with("news",$news);
     }
 
@@ -133,82 +113,51 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(News $news)
     {
         $locale =Lang::all();
-        $news = News::find($id);
         return view("admin.news.edit")->with([
             "news"=>$news,
             'locale' => $locale
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
 
-    public function update(Request $request, $id)
+    public function update(Request $request, News $news)
     {
-        $locale = Lang::all();
         $this->validate($request,[
             'title'=>'required',
             'text'=> 'required',
         ]);
-
-
         if($request->hasFile('img')) {
             $fileNameWithExt = $request->file('img')->getClientOriginalName();
             $fileName = pathinfo($fileNameWithExt,PATHINFO_FILENAME);
             $ext = $request->file('img')->getClientOriginalExtension();
             $fileNameToStore = $fileName."_".time().".".$ext;
-//            $request->file('img')->storeAs('public/news',$fileNameToStore);
             Image::load($request->file('img'))->save('uploads/news/'.$fileNameToStore);
-
         }
-
-
         $arr_slug = [];
         $slug = $request->slug;
         foreach ($slug as $key => $value) {
             $value = mb_strtolower(str_replace(' ','-',$value));
-            array_push($arr_slug, $value);
+            $arr_slug[$key] = $value;
         }
 
-
-        $array2 = [];
-        foreach ($locale as $lockey => $local) {
-            array_push($array2,$local->lang);
-        }
-        $keys = array_values($array2);
-        $title = array_combine($keys, array_values($request->title));
-        $slug = array_combine($keys, array_values($arr_slug));
-        $text = array_combine($keys, array_values($request->text));
-
-        $news = News::find($id);
-        $news->title = $title;
-        $news->text = $text;
-        $news->slug = $slug;
+        $news->title = $request->title;
+        $news->text = $request->text;
+        $news->slug = $arr_slug;
         if($request->hasFile('img')) {
-//            if($news->img !== '') {
                 if(is_file('uploads/news/'.$news->img)){
                     unlink('uploads/news/'.$news->img);
                 }
-//                Storage::delete('public/news/' . $news->img);
-//            }
             $news->img = $fileNameToStore;
         }
         if($news->save()) {
-            return redirect("/admin/news/$id")->with('success',trans('admin.succesfully_changed'));
+            return redirect("/admin/news/$news->id")->with('success',trans('admin.succesfully_changed'));
         }
         else {
-            return redirect("/admin/news/$id/edit")->with('error',trans('admin.didnot_change'));
+            return redirect("/admin/news/$news->id/edit")->with('error',trans('admin.didnot_change'));
         }
-
-
     }
 
     /**
@@ -217,12 +166,8 @@ class NewsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(News $news)
     {
-        $news = News::find($id);
-//        if($news->img !=='') {
-//            Storage::delete('public/news/'.$news->img);
-//        }
         if (is_file("uploads/news/".$news->img)) {
             unlink("uploads/news/".$news->img);
         }

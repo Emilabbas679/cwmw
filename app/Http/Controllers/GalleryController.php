@@ -46,10 +46,8 @@ class GalleryController extends Controller
 
     public function store(Request $request)
     {
-
         $this->validate($request,[
             'title'=>'required',
-//            'img' => 'image|nullable|max:1999'
         ]);
         if($request->hasFile('img')) {
             $fileNameToDb = '';
@@ -59,27 +57,16 @@ class GalleryController extends Controller
                 $ext = $file->getClientOriginalExtension();
                 $fileNameToStore = $fileName."_".time().".".$ext;
                 $fileNameToDb .= $fileNameToStore.' ';
-//                $file->storeAs('public/gallery',$fileNameToStore);
                 Image::load($file)->save('uploads/gallery/'.$fileNameToStore);
 
             }
             $fileNameToDb = rtrim($fileNameToDb,' ');
-
         }
-        $locale = Lang::all();
-        $arr_title = [];
-        $title = $request->title;
-        foreach ($title as $key =>$value) {
-            array_push($arr_title, $value);
+        else{
+            $fileNameToDb='';
         }
-        $array2 = [];
-        foreach ($locale as $lockey => $local) {
-            array_push($array2,$local->lang);
-        }
-        $keys = array_values($array2);
-        $title = array_combine($keys, array_values($arr_title));
         $gallery = new Gallery();
-        $gallery->title = $title;
+        $gallery->title = $request->title;
         $gallery->img = $fileNameToDb;
         if($gallery->save()){
             return redirect('/admin/gallery')->with('success',trans('admin.saved'));
@@ -125,9 +112,8 @@ class GalleryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Gallery $gallery)
     {
-        $locale = Lang::all();
         $this->validate($request,[
             'title'=>'required',
 
@@ -141,47 +127,26 @@ class GalleryController extends Controller
                 $ext = $file->getClientOriginalExtension();
                 $fileNameToStore = $fileName."_".time().".".$ext;
                 $fileNameToDb .= $fileNameToStore.' ';
-//                $file->storeAs('public/gallery',$fileNameToStore);
                 Image::load($file)->save('uploads/gallery/'.$fileNameToStore);
-
             }
-            $fileNameToDb = rtrim($fileNameToDb,' ');
-
-        }
-
-        $arr_title = [];
-        $title = $request->title;
-        foreach ($title as $key =>$value) {
-            array_push($arr_title, $value);
-        }
-
-        $array2 = [];
-        foreach ($locale as $lockey => $local) {
-            array_push($array2,$local->lang);
-        }
-        $keys = array_values($array2);
-        $title = array_combine($keys, array_values($arr_title));
-
-        $gallery = Gallery::find($id);
-        $gallery->title = $title;
-
-        if($request->hasFile('img')) {
             if($gallery->img !== '') {
                 $images = explode(' ' , $gallery->img);
                 foreach ($images as $img) {
                     if(is_file("uploads/gallery/".$img)) {
                         unlink("uploads/gallery/".$img);
                     }
-//                    Storage::delete('public/gallery/' . $img);
                 }
             }
+            $fileNameToDb = rtrim($fileNameToDb,' ');
             $gallery->img = $fileNameToDb;
+
         }
+        $gallery->title = $request->title;
         if($gallery->save()) {
-            return redirect("/admin/gallery/$id")->with('success',trans('admin.succesfully_changed'));
+            return redirect("/admin/gallery/$gallery->id")->with('success',trans('admin.succesfully_changed'));
         }
         else {
-            return redirect("/admin/gallery/$id/edit")->with('error',trans('admin.didnot_change'));
+            return redirect("/admin/gallery/$gallery->id/edit")->with('error',trans('admin.didnot_change'));
         }
     }
 
@@ -191,9 +156,8 @@ class GalleryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Gallery $gallery)
     {
-        $gallery = Gallery::find($id);
         if($gallery->img !== '') {
             $images = explode(' ' , $gallery->img);
             foreach ($images as $img) {

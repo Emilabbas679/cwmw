@@ -48,7 +48,7 @@
                                                     </label>
                                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                                         <input required id="title" type="text"
-                                                               name="title[]"
+                                                               name="title[{{$local->lang}}]"
                                                                class="form-control col-md-7 col-xs-12">
                                                     </div>
                                                 </div>
@@ -69,7 +69,7 @@
                                                            class="control-label col-md-2 col-sm-2 col-xs-12">{{trans('admin.text')}}
                                                     </label>
                                                     <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <textarea required id="text" name="text[]"
+                                                    <textarea required id="text" name="text[{{$local->lang}}]"
                                                               class="form-control col-md-7 col-xs-12 ckeditor" >
                                                     </textarea>
                                                     </div>

@@ -76,27 +76,12 @@ class DepartmentsController extends Controller
      */
     public function update(Request $request, $id)
     {
-
-        $locale = Lang::all();
         $this->validate($request,[
             'departments'=>'required',
 
         ]);
-
-        $arr_departments = [];
-        $title = $request->departments;
-        foreach ($title as $key =>$value) {
-            array_push($arr_departments, $value);
-        }
-        $array2 = [];
-        foreach ($locale as $lockey => $local) {
-            array_push($array2,$local->lang);
-        }
-
-        $keys = array_values($array2);
-        $departments = array_combine($keys, array_values($arr_departments));
         $update = Departments::find($id);
-        $update->departments = $departments;
+        $update->departments = $request->departments;
 
         if($update->save()) {
             return redirect("/admin/departments")->with('success',trans('admin.succesfully_changed'));

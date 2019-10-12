@@ -24,9 +24,8 @@ class AboutController extends Controller
     }
 
 
-    public function edit($id)
+    public function edit(About $about)
     {
-        $about= About::find($id);
         $locale = Lang::all();
         return view('admin.about.edit')->with([
             'about'=> $about,
@@ -43,28 +42,12 @@ class AboutController extends Controller
      */
     public function update(Request $request, $id)
     {
-
-        $locale = Lang::all();
         $this->validate($request,[
             'about'=>'required',
 
         ]);
-
-        $arr_about = [];
-        $title = $request->about;
-        foreach ($title as $key =>$value) {
-            array_push($arr_about, $value);
-        }
-        $array2 = [];
-        foreach ($locale as $lockey => $local) {
-            array_push($array2,$local->lang);
-        }
-
-        $keys = array_values($array2);
-        $about = array_combine($keys, array_values($arr_about));
         $update = About::find($id);
-        $update->about = $about;
-
+        $update->about = $request->about;
         if($update->save()) {
             return redirect("/admin/about")->with('success',trans('admin.succesfully_changed'));
         }
